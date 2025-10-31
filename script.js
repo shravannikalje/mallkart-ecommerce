@@ -800,24 +800,19 @@ function scrollToProducts() {
     document.getElementById('products').scrollIntoView({ behavior: 'smooth' });
 }
 
-// User Authentication
-let isAuthenticated = false;
-let currentOTP = null;
-let otpTimer = null;
-let remainingTime = 30;
-
-// Check if user is already authenticated
+// Initialize app directly
 document.addEventListener('DOMContentLoaded', () => {
-    const savedAuth = localStorage.getItem('isAuthenticated');
-    const savedPhone = localStorage.getItem('userPhone');
+    // Show all products immediately
+    displayProducts(products);
+    updateCartCount();
     
-    if (savedAuth === 'true' && savedPhone) {
-        isAuthenticated = true;
-        showMainContent();
-    } else {
-        hideMainContent();
-    }
-});
+    // Initialize category handlers
+    document.querySelectorAll('.category-card').forEach(card => {
+        card.addEventListener('click', () => {
+            const category = card.querySelector('h3').textContent;
+            filterByCategory(category);
+        });
+    });
 
 function showMainContent() {
     document.getElementById('loginPage').style.display = 'none';
