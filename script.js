@@ -803,12 +803,114 @@ function scrollToProducts() {
 // User Authentication
 let isAuthenticated = false;
 let currentOTP = null;
+let otpTimer = null;
+let remainingTime = 30;
 
-function showOTPModal() {
+// Hide main content until authenticated
+document.addEventListener('DOMContentLoaded', () => {
     if (!isAuthenticated) {
-        document.getElementById('otpModal').style.display = 'block';
+        document.querySelector('.navbar').style.display = 'none';
+        document.querySelector('.hero').style.display = 'none';
+        document.querySelector('.categories').style.display = 'none';
+        document.querySelector('.products').style.display = 'none';
+        document.querySelector('.footer').style.display = 'none';
+    }
+});
+
+function sendOTP() {
+    const phoneInput = document.getElementById('phoneNumber');
+    const phone = phoneInput.value;
+    
+    if (phone.match(/^[0-9]{10}$/)) {
+        // Generate OTP
+        currentOTP = Math.floor(100000 + Math.random() * 900000);
+        
+        // In production, this would call an API to send SMS
+        // For demo, we'll show it in console and alert
+        console.log(`OTP for ${phone}: ${currentOTP}`);
+        
+        // Update UI
+        document.getElementById('phoneStep').style.display = 'none';
+        document.getElementById('otpStep').style.display = 'block';
+        document.getElementById('displayPhone').textContent = `+91 ${phone}`;
+        
+        // Start timer
+        startOTPTimer();
+        
+        // Send SMS API call would go here
+        // For demo, show alert
+        alert(`डेमो OTP: ${currentOTP}`);
+    } else {
+        showNotification('कृपया वैध 10 अंकी मोबाईल नंबर टाका');
     }
 }
+
+function startOTPTimer() {
+    remainingTime = 30;
+    document.getElementById('resendButton').disabled = true;
+    
+    otpTimer = setInterval(() => {
+        remainingTime--;
+        const minutes = Math.floor(remainingTime / 60);
+        const seconds = remainingTime % 60;
+        document.getElementById('otpTimer').textContent = 
+            `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+            
+        if (remainingTime <= 0) {
+            clearInterval(otpTimer);
+            document.getElementById('resendButton').disabled = false;
+        }
+    }, 1000);
+}
+
+function verifyOTP() {
+    const inputs = document.querySelectorAll('.otp-box');
+    const enteredOTP = Array.from(inputs).map(input => input.value).join('');
+    
+    if (enteredOTP == currentOTP) {
+        isAuthenticated = true;
+        localStorage.setItem('isAuthenticated', 'true');
+        localStorage.setItem('userPhone', document.getElementById('phoneNumber').value);
+        
+        // Show main content
+        document.getElementById('loginPage').style.display = 'none';
+        document.querySelector('.navbar').style.display = 'flex';
+        document.querySelector('.hero').style.display = 'block';
+        document.querySelector('.categories').style.display = 'block';
+        document.querySelector('.products').style.display = 'block';
+        document.querySelector('.footer').style.display = 'block';
+        
+        showNotification('लॉगिन यशस्वी!');
+    } else {
+        showNotification('चुकीचा OTP. कृपया पुन्हा प्रयत्न करा.');
+    }
+}
+
+function resendOTP() {
+    clearInterval(otpTimer);
+    sendOTP();
+}
+
+function goBackToPhone() {
+    document.getElementById('otpStep').style.display = 'none';
+    document.getElementById('phoneStep').style.display = 'block';
+    clearInterval(otpTimer);
+}
+
+// Auto-focus OTP inputs
+document.querySelectorAll('.otp-box').forEach((input, index) => {
+    input.addEventListener('keyup', (e) => {
+        if (e.key >= '0' && e.key <= '9') {
+            if (index < 5) {
+                document.querySelectorAll('.otp-box')[index + 1].focus();
+            }
+        } else if (e.key === 'Backspace') {
+            if (index > 0) {
+                document.querySelectorAll('.otp-box')[index - 1].focus();
+            }
+        }
+    });
+});
 
 function sendOTP() {
     const phone = document.getElementById('phoneNumber').value;

@@ -233,20 +233,63 @@
         </div>
     </section>
 
-    <!-- OTP Modal -->
-    <div id="otpModal" class="modal">
-        <div class="modal-content">
-            <h2>फोन नंबर वेरिफिकेशन</h2>
-            <div class="otp-form">
-                <div class="form-group">
-                    <label for="phoneNumber">तुमचा फोन नंबर टाका</label>
-                    <input type="tel" id="phoneNumber" pattern="[0-9]{10}" required>
-                    <button onclick="sendOTP()" class="send-otp-btn">OTP पाठवा</button>
-                </div>
-                <div class="form-group" id="otpGroup" style="display: none;">
-                    <label for="otpInput">OTP टाका</label>
-                    <input type="text" id="otpInput" pattern="[0-9]{6}" maxlength="6" required>
-                    <button onclick="verifyOTP()" class="verify-otp-btn">वेरिफाय करा</button>
+    <!-- Login Page -->
+    <div id="loginPage" class="login-page">
+        <div class="login-container">
+            <div class="login-box">
+                <img src="icons/icon-192.svg" alt="MallKart Logo" class="login-logo">
+                <h1>MallKart</h1>
+                <p class="welcome-text">आपल्या दैनंदिन गरजांसाठी एक विश्वासार्ह ठिकाण</p>
+                
+                <div class="login-form">
+                    <div class="form-step" id="phoneStep">
+                        <h2>लॉगिन / साइन अप</h2>
+                        <div class="input-group">
+                            <label for="phoneNumber">मोबाईल नंबर</label>
+                            <div class="phone-input">
+                                <span class="country-code">+91</span>
+                                <input type="tel" id="phoneNumber" 
+                                    pattern="[0-9]{10}" 
+                                    maxlength="10"
+                                    placeholder="तुमचा मोबाईल नंबर टाका"
+                                    required>
+                            </div>
+                        </div>
+                        <button onclick="sendOTP()" class="login-btn">
+                            <span>पुढे जा</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+
+                    <div class="form-step" id="otpStep" style="display: none;">
+                        <h2>OTP वेरिफिकेशन</h2>
+                        <p class="otp-sent-to">OTP पाठवला आहे: <span id="displayPhone"></span></p>
+                        <div class="input-group">
+                            <label for="otpInput">OTP टाका</label>
+                            <div class="otp-inputs">
+                                <input type="text" maxlength="1" class="otp-box">
+                                <input type="text" maxlength="1" class="otp-box">
+                                <input type="text" maxlength="1" class="otp-box">
+                                <input type="text" maxlength="1" class="otp-box">
+                                <input type="text" maxlength="1" class="otp-box">
+                                <input type="text" maxlength="1" class="otp-box">
+                            </div>
+                        </div>
+                        <div class="timer">
+                            <span id="otpTimer">00:30</span> मध्ये OTP एक्स्पायर होईल
+                        </div>
+                        <button onclick="verifyOTP()" class="login-btn verify-btn">
+                            <span>वेरिफाय करा</span>
+                            <i class="fas fa-check"></i>
+                        </button>
+                        <button onclick="resendOTP()" id="resendButton" class="resend-btn" disabled>
+                            OTP पुन्हा पाठवा
+                        </button>
+                        <button onclick="goBackToPhone()" class="back-btn">
+                            <i class="fas fa-arrow-left"></i>
+                            मागे जा
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
