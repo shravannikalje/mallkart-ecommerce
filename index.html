@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Mall E-commerce</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="logo">MallKart</div>
+        <div class="nav-links">
+            <a href="#home" class="active">Home</a>
+            <a href="#products">Products</a>
+            <a href="#categories">Categories</a>
+            <a href="#orders">My Orders</a>
+            <a href="#analytics">Analytics</a>
+        </div>
+        <div class="cart-section">
+            <div class="search-bar">
+                <div class="search-input-wrapper">
+                    <i class="fas fa-search search-icon"></i>
+                    <input type="text" id="searchInput" placeholder="प्रॉडक्ट शोधा... (उदा. तांदूळ, डाळ, मसाले)">
+                    <div class="search-suggestions" id="searchSuggestions"></div>
+                </div>
+            </div>
+            <div class="cart-icon" onclick="openCart()">
+                <i class="fas fa-shopping-cart"></i>
+                <span id="cartCount">0</span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1>Welcome to MallKart</h1>
+            <p>Your One-Stop Shopping Destination</p>
+            <button class="cta-button" onclick="scrollToProducts()">Start Shopping</button>
+        </div>
+    </section>
+
+    <!-- Categories Section -->
+    <section class="categories" id="categories">
+        <h2>कॅटेगरी निवडा</h2>
+        <div class="category-grid">
+            <div class="category-card">
+                <i class="fas fa-seedling"></i>
+                <h3>धान्य</h3>
+            </div>
+            <div class="category-card">
+                <i class="fas fa-mortar-pestle"></i>
+                <h3>डाळी</h3>
+            </div>
+            <div class="category-card">
+                <i class="fas fa-wine-bottle"></i>
+                <h3>तेल</h3>
+            </div>
+            <div class="category-card">
+                <i class="fas fa-pepper-hot"></i>
+                <h3>मसाले</h3>
+            </div>
+            <div class="category-card">
+                <i class="fas fa-mug-hot"></i>
+                <h3>पेय</h3>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section class="products" id="products">
+        <h2>Featured Products</h2>
+        <div class="product-filters">
+            <select id="categoryFilter" onchange="filterProducts()">
+                <option value="all">All Categories</option>
+                <!-- Categories will be added dynamically -->
+            </select>
+            <select id="priceFilter" onchange="filterProducts()">
+                <option value="all">All Prices</option>
+                <option value="0-500">₹0 - ₹500</option>
+                <option value="501-1000">₹501 - ₹1000</option>
+                <option value="1001-plus">₹1001+</option>
+            </select>
+        </div>
+        <div class="product-grid" id="productGrid">
+            <!-- Products will be added dynamically -->
+        </div>
+    </section>
+
+    <!-- Cart Modal -->
+    <div id="cartModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeCart()">&times;</span>
+            <h2>Your Cart</h2>
+            <div id="cartItems">
+                <!-- Cart items will be added dynamically -->
+            </div>
+            <div class="cart-total">
+                <h3>Total: ₹<span id="cartTotal">0</span></h3>
+                <button onclick="checkout()" class="checkout-button">Proceed to Checkout</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Checkout Modal -->
+    <div id="checkoutModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeCheckout()">&times;</span>
+            <h2>ऑर्डर पूर्ण करा</h2>
+            <div class="order-summary">
+                <h3>तुमच्या ऑर्डरचा तपशील</h3>
+                <div id="orderSummaryItems"></div>
+                <div class="order-total">
+                    <h4>एकूण रक्कम: ₹<span id="orderTotal">0</span></h4>
+                </div>
+            </div>
+            <form id="checkoutForm" onsubmit="sendOrderToWhatsApp(event)">
+                <div class="form-group">
+                    <label for="phone">मोबाईल नंबर (WhatsApp)</label>
+                    <input type="tel" id="phone" pattern="[0-9]{10}" title="कृपया 10 अंकी मोबाईल नंबर टाका" required>
+                </div>
+                <div class="form-group">
+                    <label for="name">तुमचे नाव</label>
+                    <input type="text" id="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="address">डिलिव्हरी पत्ता</label>
+                    <textarea id="address" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="deliveryTime">डिलिव्हरी वेळ</label>
+                    <select id="deliveryTime" required>
+                        <option value="">वेळ निवडा</option>
+                        <option value="morning">सकाळ (9 AM - 12 PM)</option>
+                        <option value="afternoon">दुपार (12 PM - 4 PM)</option>
+                        <option value="evening">संध्याकाळ (4 PM - 8 PM)</option>
+                    </select>
+                </div>
+                <div class="payment-options">
+                    <h3>पेमेंट पर्याय</h3>
+                    <div class="payment-method">
+                        <input type="radio" id="cod" name="payment" value="cod" checked>
+                        <label for="cod">कॅश ऑन डिलिव्हरी</label>
+                    </div>
+                    <div class="payment-method">
+                        <input type="radio" id="online" name="payment" value="online">
+                        <label for="online">ऑनलाईन पेमेंट</label>
+                    </div>
+                </div>
+                <button type="submit" class="whatsapp-button">
+                    <i class="fab fa-whatsapp"></i> WhatsApp वर ऑर्डर पाठवा
+                </button>
+                <div class="form-group">
+                    <label for="email">ईमेल</label>
+                    <input type="email" id="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="address">डिलिव्हरी पत्ता</label>
+                    <textarea id="address" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="deliveryTime">डिलिव्हरी वेळ</label>
+                    <select id="deliveryTime" required>
+                        <option value="">वेळ निवडा</option>
+                        <option value="morning">सकाळ (9 AM - 12 PM)</option>
+                        <option value="afternoon">दुपार (12 PM - 4 PM)</option>
+                        <option value="evening">संध्याकाळ (4 PM - 8 PM)</option>
+                    </select>
+                </div>
+                <div class="payment-options">
+                    <h3>पेमेंट पर्याय</h3>
+                    <div class="payment-method">
+                        <input type="radio" id="razorpay" name="payment" value="razorpay" checked>
+                        <label for="razorpay">ऑनलाईन पेमेंट (Razorpay)</label>
+                    </div>
+                    <div class="payment-method">
+                        <input type="radio" id="cod" name="payment" value="cod">
+                        <label for="cod">कॅश ऑन डिलिव्हरी</label>
+                    </div>
+                </div>
+                <button type="submit" class="order-button">ऑर्डर प्लेस करा</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Order Success Modal -->
+    <div id="orderSuccessModal" class="modal">
+        <div class="modal-content success-modal">
+            <i class="fas fa-check-circle success-icon"></i>
+            <h2>ऑर्डर यशस्वी!</h2>
+            <p>तुमची ऑर्डर यशस्वीरित्या प्लेस केली गेली आहे.</p>
+            <div class="order-details" id="successOrderDetails">
+                <!-- Order details will be added here -->
+            </div>
+            <p>तुम्हाला WhatsApp वर रसीद पाठवली आहे.</p>
+            <button onclick="closeOrderSuccess()" class="success-button">ठीक आहे</button>
+        </div>
+    </div>
+
+    <!-- Orders Section -->
+    <section class="orders" id="orders">
+        <h2>My Orders</h2>
+        <div class="orders-list" id="ordersList">
+            <!-- Orders will be added dynamically -->
+        </div>
+    </section>
+
+    <!-- Analytics Section -->
+    <section class="analytics" id="analytics">
+        <h2>Business Analytics</h2>
+        <div class="analytics-grid">
+            <div class="analytics-card">
+                <h3>Sales Overview</h3>
+                <canvas id="salesChart"></canvas>
+            </div>
+            <div class="analytics-card">
+                <h3>Popular Products</h3>
+                <canvas id="productsChart"></canvas>
+            </div>
+            <div class="analytics-card">
+                <h3>Customer Metrics</h3>
+                <canvas id="customersChart"></canvas>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>MallKart</h3>
+                <p>Your trusted shopping destination.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <a href="#home">Home</a>
+                <a href="#products">Products</a>
+                <a href="#categories">Categories</a>
+                <a href="#orders">Orders</a>
+            </div>
+            <div class="footer-section">
+                <h3>Contact Info</h3>
+                <p><i class="fas fa-phone"></i> +91 1234567890</p>
+                <p><i class="fas fa-envelope"></i> info@mallkart.com</p>
+                <p><i class="fas fa-map-marker-alt"></i> Mall Address, City</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 MallKart. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
