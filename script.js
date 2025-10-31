@@ -806,6 +806,37 @@ let currentOTP = null;
 let otpTimer = null;
 let remainingTime = 30;
 
+// Check if user is already authenticated
+document.addEventListener('DOMContentLoaded', () => {
+    const savedAuth = localStorage.getItem('isAuthenticated');
+    const savedPhone = localStorage.getItem('userPhone');
+    
+    if (savedAuth === 'true' && savedPhone) {
+        isAuthenticated = true;
+        showMainContent();
+    } else {
+        hideMainContent();
+    }
+});
+
+function showMainContent() {
+    document.getElementById('loginPage').style.display = 'none';
+    document.querySelector('.navbar').style.display = 'flex';
+    document.querySelector('.hero').style.display = 'block';
+    document.querySelector('.categories').style.display = 'block';
+    document.querySelector('.products').style.display = 'block';
+    document.querySelector('.footer').style.display = 'block';
+}
+
+function hideMainContent() {
+    document.querySelector('.navbar').style.display = 'none';
+    document.querySelector('.hero').style.display = 'none';
+    document.querySelector('.categories').style.display = 'none';
+    document.querySelector('.products').style.display = 'none';
+    document.querySelector('.footer').style.display = 'none';
+    document.getElementById('loginPage').style.display = 'flex';
+}
+
 // Hide main content until authenticated
 document.addEventListener('DOMContentLoaded', () => {
     if (!isAuthenticated) {
@@ -819,11 +850,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function sendOTP() {
     const phoneInput = document.getElementById('phoneNumber');
-    const phone = phoneInput.value;
+    const phone = phoneInput.value.trim();
     
     if (phone.match(/^[0-9]{10}$/)) {
         // Generate OTP
         currentOTP = Math.floor(100000 + Math.random() * 900000);
+        
+        // Clear any existing timer
+        if (otpTimer) {
+            clearInterval(otpTimer);
+        }
         
         // In production, this would call an API to send SMS
         // For demo, we'll show it in console and alert
