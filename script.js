@@ -1,13 +1,108 @@
 // Global Variables
 let products = [
+    // भाजीपाला
     {
         id: 1,
-        name: "तांदूळ (Premium Basmati)",
-        description: "उत्कृष्ट दर्जाचा बासमती तांदूळ - 5kg",
-        price: 399,
-        category: "धान्य",
-        image: "https://images.unsplash.com/photo-1586201375761-83865001e31c",
+        name: "टोमॅटो",
+        description: "ताजे टोमॅटो - 1kg",
+        price: 40,
+        category: "भाजीपाला",
+        image: "https://images.unsplash.com/photo-1546094096-0df4bcaaa337",
+        stock: 100
+    },
+    {
+        id: 2,
+        name: "कांदा",
+        description: "ताजा कांदा - 1kg",
+        price: 30,
+        category: "भाजीपाला",
+        image: "https://images.unsplash.com/photo-1587049633312-d628ae50a8ae",
+        stock: 100
+    },
+    {
+        id: 3,
+        name: "बटाटा",
+        description: "ताजा बटाटा - 1kg",
+        price: 35,
+        category: "भाजीपाला",
+        image: "https://images.unsplash.com/photo-1518977676601-b53f82aba655",
+        stock: 100
+    },
+    // साबण आणि स्वच्छता
+    {
+        id: 4,
+        name: "लाइफबॉय साबण",
+        description: "लाइफबॉय साबण - 4 नग पॅक",
+        price: 100,
+        category: "साबण",
+        image: "https://example.com/lifebuoy.jpg",
         stock: 50
+    },
+    {
+        id: 5,
+        name: "डव साबण",
+        description: "डव बॉडी वॉश - 250ml",
+        price: 180,
+        category: "साबण",
+        image: "https://example.com/dove.jpg",
+        stock: 40
+    },
+    // मेडिकल
+    {
+        id: 6,
+        name: "पॅरासिटामॉल",
+        description: "पॅरासिटामॉल टॅबलेट्स - 10 नग",
+        price: 30,
+        category: "मेडिकल",
+        image: "https://example.com/paracetamol.jpg",
+        stock: 100
+    },
+    {
+        id: 7,
+        name: "फर्स्ट एड किट",
+        description: "बेसिक फर्स्ट एड किट",
+        price: 250,
+        category: "मेडिकल",
+        image: "https://example.com/firstaid.jpg",
+        stock: 30
+    },
+    // इलेक्ट्रिकल
+    {
+        id: 8,
+        name: "एलईडी बल्ब",
+        description: "9W LED बल्ब",
+        price: 120,
+        category: "इलेक्ट्रिकल",
+        image: "https://example.com/ledbulb.jpg",
+        stock: 50
+    },
+    {
+        id: 9,
+        name: "एक्सटेंशन कॉर्ड",
+        description: "3 मीटर एक्सटेंशन कॉर्ड",
+        price: 299,
+        category: "इलेक्ट्रिकल",
+        image: "https://example.com/extension.jpg",
+        stock: 30
+    },
+    // किड्स
+    {
+        id: 10,
+        name: "क्रेयॉन्स",
+        description: "12 रंगांचे क्रेयॉन्स सेट",
+        price: 99,
+        category: "किड्स",
+        image: "https://example.com/crayons.jpg",
+        stock: 40
+    },
+    {
+        id: 11,
+        name: "खेळणी",
+        description: "शैक्षणिक खेळणी सेट",
+        price: 399,
+        category: "किड्स",
+        image: "https://example.com/toys.jpg",
+        stock: 25
     },
     {
         id: 2,
@@ -705,8 +800,50 @@ function scrollToProducts() {
     document.getElementById('products').scrollIntoView({ behavior: 'smooth' });
 }
 
+// User Authentication
+let isAuthenticated = false;
+let currentOTP = null;
+
+function showOTPModal() {
+    if (!isAuthenticated) {
+        document.getElementById('otpModal').style.display = 'block';
+    }
+}
+
+function sendOTP() {
+    const phone = document.getElementById('phoneNumber').value;
+    if (phone.match(/^[0-9]{10}$/)) {
+        // Generate a 6-digit OTP
+        currentOTP = Math.floor(100000 + Math.random() * 900000);
+        // In production, this would be sent via SMS
+        alert(`OTP for testing: ${currentOTP}`);
+        document.getElementById('otpGroup').style.display = 'block';
+    } else {
+        alert('कृपया वैध 10 अंकी मोबाईल नंबर टाका');
+    }
+}
+
+function verifyOTP() {
+    const inputOTP = document.getElementById('otpInput').value;
+    if (inputOTP == currentOTP) {
+        isAuthenticated = true;
+        localStorage.setItem('isAuthenticated', 'true');
+        localStorage.setItem('userPhone', document.getElementById('phoneNumber').value);
+        document.getElementById('otpModal').style.display = 'none';
+        showNotification('वेरिफिकेशन यशस्वी!');
+    } else {
+        alert('चुकीचा OTP. कृपया पुन्हा प्रयत्न करा.');
+    }
+}
+
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
+    // Check authentication
+    isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
+    if (!isAuthenticated) {
+        showOTPModal();
+    }
+    
     // Show all products initially instead of fetching
     displayProducts(products);
     updateCartCount();
