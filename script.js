@@ -718,6 +718,15 @@ document.addEventListener('DOMContentLoaded', () => {
             filterByCategory(category);
         });
     });
+
+    // Register service worker for PWA (if supported)
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('/service-worker.js')
+                .then(reg => console.log('Service Worker registered:', reg.scope))
+                .catch(err => console.warn('Service Worker registration failed:', err));
+        });
+    }
 });
 
 // Backend server commands
