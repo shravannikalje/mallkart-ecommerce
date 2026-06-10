@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MallKart - Modern E-Commerce Platform</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-content">
+                <div class="logo">
+                    <i class="fas fa-shopping-bag"></i>
+                    <span>MallKart</span>
+                </div>
+                <div class="nav-menu">
+                    <a href="#" class="nav-link">Home</a>
+                    <a href="#products" class="nav-link">Shop</a>
+                    <a href="#" class="nav-link">Categories</a>
+                    <a href="#" class="nav-link">About</a>
+                </div>
+                <div class="nav-icons">
+                    <div class="search-box">
+                        <input type="text" placeholder="Search products...">
+                        <button><i class="fas fa-search"></i></button>
+                    </div>
+                    <a href="#" class="icon-btn">
+                        <i class="fas fa-heart"></i>
+                        <span class="badge">0</span>
+                    </a>
+                    <a href="#" class="icon-btn">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="badge">0</span>
+                    </a>
+                    <a href="#" class="icon-btn">
+                        <i class="fas fa-user"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Welcome to MallKart</h1>
+            <p>Discover amazing products at unbeatable prices</p>
+            <button class="btn btn-primary">Shop Now</button>
+        </div>
+        <div class="hero-image">
+            <div class="hero-placeholder">
+                <i class="fas fa-shopping-bags"></i>
+            </div>
+        </div>
+    </section>
+
+    <!-- Categories -->
+    <section class="categories">
+        <div class="container">
+            <h2>Shop by Category</h2>
+            <div class="category-grid">
+                <div class="category-card">
+                    <div class="category-icon"><i class="fas fa-tshirt"></i></div>
+                    <h3>Fashion</h3>
+                </div>
+                <div class="category-card">
+                    <div class="category-icon"><i class="fas fa-laptop"></i></div>
+                    <h3>Electronics</h3>
+                </div>
+                <div class="category-card">
+                    <div class="category-icon"><i class="fas fa-home"></i></div>
+                    <h3>Home</h3>
+                </div>
+                <div class="category-card">
+                    <div class="category-icon"><i class="fas fa-book"></i></div>
+                    <h3>Books</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Products -->
+    <section class="products" id="products">
+        <div class="container">
+            <h2>Featured Products</h2>
+            <div class="product-grid">
+                <div class="product-card" data-product-id="prod001">
+                    <div class="product-image">
+                        <div class="image-placeholder"><i class="fas fa-image"></i></div>
+                        <button class="wishlist-btn"><i class="far fa-heart"></i></button>
+                        <span class="badge-sale">Sale</span>
+                    </div>
+                    <div class="product-info">
+                        <h3>Premium Wireless Headphones</h3>
+                        <p class="product-category">Electronics</p>
+                        <div class="rating">
+                            <span class="stars">★★★★★</span>
+                            <span class="reviews">(128)</span>
+                        </div>
+                        <div class="product-price">
+                            <span class="price">₹999</span>
+                            <span class="original-price">₹1,499</span>
+                        </div>
+                        <button class="btn btn-secondary">Add to Cart</button>
+                    </div>
+                </div>
+
+                <div class="product-card" data-product-id="prod002">
+                    <div class="product-image">
+                        <div class="image-placeholder"><i class="fas fa-image"></i></div>
+                        <button class="wishlist-btn"><i class="far fa-heart"></i></button>
+                    </div>
+                    <div class="product-info">
+                        <h3>Stylish Smartwatch</h3>
+                        <p class="product-category">Electronics</p>
+                        <div class="rating">
+                            <span class="stars">★★★★☆</span>
+                            <span class="reviews">(95)</span>
+                        </div>
+                        <div class="product-price">
+                            <span class="price">₹1,299</span>
+                        </div>
+                        <button class="btn btn-secondary">Add to Cart</button>
+                    </div>
+                </div>
+
+                <div class="product-card" data-product-id="prod003">
+                    <div class="product-image">
+                        <div class="image-placeholder"><i class="fas fa-image"></i></div>
+                        <button class="wishlist-btn"><i class="far fa-heart"></i></button>
+                        <span class="badge-sale">-30%</span>
+                    </div>
+                    <div class="product-info">
+                        <h3>Comfortable Cotton T-Shirt</h3>
+                        <p class="product-category">Fashion</p>
+                        <div class="rating">
+                            <span class="stars">★★★★★</span>
+                            <span class="reviews">(256)</span>
+                        </div>
+                        <div class="product-price">
+                            <span class="price">₹749</span>
+                            <span class="original-price">₹1,099</span>
+                        </div>
+                        <button class="btn btn-secondary">Add to Cart</button>
+                    </div>
+                </div>
+
+                <div class="product-card" data-product-id="prod004">
+                    <div class="product-image">
+                        <div class="image-placeholder"><i class="fas fa-image"></i></div>
+                        <button class="wishlist-btn"><i class="far fa-heart"></i></button>
+                    </div>
+                    <div class="product-info">
+                        <h3>Modern Desk Lamp</h3>
+                        <p class="product-category">Home</p>
+                        <div class="rating">
+                            <span class="stars">★★★★★</span>
+                            <span class="reviews">(512)</span>
+                        </div>
+                        <div class="product-price">
+                            <span class="price">₹2,499</span>
+                        </div>
+                        <button class="btn btn-secondary">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section class="features">
+        <div class="container">
+            <div class="feature">
+                <div class="feature-icon"><i class="fas fa-shipping-fast"></i></div>
+                <h3>Free Shipping</h3>
+                <p>On orders above ₹499</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon"><i class="fas fa-lock"></i></div>
+                <h3>Secure Payment</h3>
+                <p>100% secure transactions</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon"><i class="fas fa-undo"></i></div>
+                <h3>Easy Returns</h3>
+                <p>30-day return policy</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon"><i class="fas fa-headset"></i></div>
+                <h3>Support</h3>
+                <p>24/7 customer support</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>About MallKart</h4>
+                    <ul>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Press</a></li>
+                        <li><a href="#">Blog</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Customer Service</h4>
+                    <ul>
+                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Shipping Info</a></li>
+                        <li><a href="#">Returns</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Cookie Policy</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Follow Us</h4>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 MallKart. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
